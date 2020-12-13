@@ -1,0 +1,22 @@
+version: '3'
+services:
+  database:
+    image: postgres:10.14
+    container_name: postgres_database
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+    - ./postgres-data:/var/lib/postgresql/data
+
+  conjur:
+    image: quincycheng/conjur
+    container_name: conjur_server
+    command: server
+    environment:
+      DATABASE_URL: "postgres://postgres:${POSTGRES_PASSWORD}@database/postgres"
+      CONJUR_DATA_KEY: "${CONJUR_DATA_KEY}"
+    depends_on:
+    - database
+    restart: on-failure
+    ports:
+      - "8888:80"
