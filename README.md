@@ -29,37 +29,102 @@ After a quick search, I found that link to the image is [https://hub.docker.com/
 
 ![screen capture 1](./media/conjur-arm64-1.png)
 
-As you can see if above screen capture, the offical repo got `linux/amd64` images, and no `linux/arm64`.
-Before I give up the an idea, why don't we build one? 
-It's an Open Source project, right?   
+I have two news - good and bad.
+
+The bad news is As you can see if above screen capture, the offical repo got `linux/amd64` images, and no `linux/arm64`.  
+
+The good news is, Fortunately, Conjur is an open source ource project, so why don't we build one for `linux/arm64`?   
 
 
 # Going down the rabbit hole
 
 Okay, first thing first, let's get the source code.
-With the [link](https://github.com/cyberark/conjur) from Docker Hub 
+With the [link](https://github.com/cyberark/conjur) from [Docker Hub](https://hub.docker.com/repository/docker/cyberark/conjur), I can quickly access GitHub project page.   
 
 ![screen capture 2](./media/conjur-arm64-2.png)
+*Conjur project on GitHub*
+
+
+Let's create a folder to clone the project.
+With `git clone https://github.com/cyberark/conjur.git`, we got the source code less than a second, literally.  
+I notice that Conjur is written in Ruby, which should be portable and can easily port for arm64 using `ruby` images, right?
+
 ![screen capture 3](./media/conjur-arm64-3.png)
+*Cloning Conjur project from GitHub*
+
+Container defination is located in `Dockerfile` file, and the base image for assemble is set by `FROM` statement
+
 ![screen capture 4](./media/conjur-arm64-4.png)
+*`From` statement in `Dockerfile` from `conjur` project *
+
 ![screen capture 5](./media/conjur-arm64-5.png)
+*No arm64 support from `cyberark/ubuntu-ruby-fips` on docker hub*
+
+
 ![screen capture 6](./media/conjur-arm64-6.png)
+*Link to GitHub from `cyberark/ubuntu-ruby-fips` on docker hub*
+
+
 ![screen capture 7](./media/conjur-arm64-7.png)
+*`cyberark/conjur-base-image`on GitHub*
+
+
 ![screen capture 8](./media/conjur-arm64-8.png)
+*`From` statement in `Dockerfile` from `ubuntu-ruby-fips` project *
+
+
+
 ![screen capture 9](./media/conjur-arm64-9.png)
+*`From` statement in `Dockerfile` from sub-projects under `ubuntu-ruby-fips`*
+
+
+
 ![screen capture 10](./media/conjur-arm64-10.png)
+*Hierarchy of image relationship*
+
 
 # 1st image: openssl-builder
 
 ![screen capture 11](./media/conjur-arm64-11.png)
+*`buildx.sh`for building both amd64 & arm64 `openssl-builder` image*
+
 ![screen capture 12](./media/conjur-arm64-12.png)
+*building `openssl-builder` image*
+
+
+14:37:56
+13:59:23
+
+
 ![screen capture 13](./media/conjur-arm64-13.png)
+*Built 38 mins and get an error *
+
+
+https://github.com/openssl/openssl/issues/11105
+
+
 ![screen capture 14](./media/conjur-arm64-14.png)
+*"Building on aarch64 with fips" issue from `openssl` on Github*
+
+Based on https://www.openssl.org/docs/fips.html, at the time of writing this blog, it said `Neither validation will work with any release other than 1.0.2`.
+So guess we need to stick with `openssl 1.0.2`.
+
+So back to the [issue page](https://github.com/openssl/openssl/issues/11105), there is a workaround which does not require any source code modifications.
+Awesome!   Shout to [@alexw91](https://github.com/alexw91)
+
 ![screen capture 15](./media/conjur-arm64-15.png)
+*The solution to fix the compile issue*
+
 ![screen capture 16](./media/conjur-arm64-16.png)
-![screen capture 17](./media/conjur-arm64-17.png)
-![screen capture 18](./media/conjur-arm64-18.png)
+*Updated `Dockerfile`*
+
+
+56 Minutes and 50 Seconds
+
+
 ![screen capture 19](./media/conjur-arm64-19.png)
+*Built `openssl-builder` successfully in 3410.1s
+
 ![screen capture 20](./media/conjur-arm64-20.png)
 
 # 2nd iamge: ubuntu-ruby-builder
