@@ -18,6 +18,7 @@ Pi4 SDB is very nice SBC, that got enough processing power to execute container-
 Considering the power consumed by homelab VM servers, guess it's a good idea to run the 7x24 systems on Pi 4 and power on my 220V VM systems only when I need them.
 
 <img src="./media/pi.jpg" width="50%" height="50%"/>
+
 *(left) Raspberry Pi 4 in Argon NEO Heatsink Case (right) Raspberry Pi 2 with 3.5" LCD HAT*
 
 
@@ -44,6 +45,7 @@ Okay, first thing first, let's get the source code.
 With the [link](https://github.com/cyberark/conjur) from [Docker Hub](https://hub.docker.com/repository/docker/cyberark/conjur), I can quickly access GitHub project page.   
 
 <img src="./media/conjur-arm64-2.png" width="50%" height="50%"/>
+
 *Conjur project on GitHub*
 
 Let's create a folder to clone the project.
@@ -51,11 +53,13 @@ With `git clone https://github.com/cyberark/conjur.git`, we got the source code 
 I notice that Conjur is written in Ruby, which should be portable and can easily port for arm64 using `ruby` images, right?
 
 <img src="./media/conjur-arm64-3.png" width="50%" height="50%"/>
+
 *Cloning Conjur project from GitHub*
 
 Container defination is located in `Dockerfile` file, and the base image for assemble is set by `FROM` statement
 
 <img src="./media/conjur-arm64-4.png" width="50%" height="50%"/>
+
 *`From` statement in `Dockerfile` from `conjur` project*
 
 <img src="./media/conjur-arm64-5.png" width="50%" height="50%"/>
@@ -98,6 +102,7 @@ Container defination is located in `Dockerfile` file, and the base image for ass
 
 
 <img src="./media/conjur-arm64-13.png" width="50%" height="50%"/>
+
 *Built 38 mins and get an error *
 
 
@@ -114,9 +119,11 @@ So back to the [issue page](https://github.com/openssl/openssl/issues/11105), th
 Awesome!   Shout to [@alexw91](https://github.com/alexw91)
 
 <img src="./media/conjur-arm64-15.png" width="50%" height="50%"/>
+
 *The solution to fix the compile issue*
 
 <img src="./media/conjur-arm64-16.png" width="50%" height="50%"/>
+
 *Updated `Dockerfile`*
 
 
@@ -124,6 +131,7 @@ Awesome!   Shout to [@alexw91](https://github.com/alexw91)
 
 
 <img src="./media/conjur-arm64-19.png" width="50%" height="50%"/>
+
 *Built `openssl-builder` successfully in 3410.1s
 
 <img src="./media/conjur-arm64-20.png" width="50%" height="50%"/>
