@@ -16,8 +16,8 @@ As an IOT & single-board-computer lover, I recently pick up a Raspberry Pi 4 boa
 Pi4 SDB is very nice SBC, that got enough processing power to execute container-based apps, while keep operating in low voltage powered by USB.
 
 Considering the power consumed by homelab VM servers, guess it's a good idea to run the 7x24 systems on Pi 4 and power on my 220V VM systems only when I need them.
-<img src="./media/pi.jpg" width="50%" height="50%"/>
 
+<img src="./media/pi.jpg" width="50%" height="50%"/>
 *(left) Raspberry Pi 4 in Argon NEO Heatsink Case (right) Raspberry Pi 2 with 3.5" LCD HAT*
 
 
@@ -45,7 +45,6 @@ With the [link](https://github.com/cyberark/conjur) from [Docker Hub](https://hu
 
 <img src="./media/conjur-arm64-2.png" width="50%" height="50%"/>
 *Conjur project on GitHub*
-
 
 Let's create a folder to clone the project.
 With `git clone https://github.com/cyberark/conjur.git`, we got the source code less than a second, literally.  
@@ -81,16 +80,16 @@ Container defination is located in `Dockerfile` file, and the base image for ass
 
 
 
-![screen capture 10](./media/conjur-arm64-10.png)
+<img src="./media/conjur-arm64-10.png" width="50%" height="50%"/>
 *Hierarchy of image relationship*
 
 
 # 1st image: openssl-builder
 
-![screen capture 11](./media/conjur-arm64-11.png)
+<img src="./media/conjur-arm64-11.png" width="50%" height="50%"/>
 *`buildx.sh`for building both amd64 & arm64 `openssl-builder` image*
 
-![screen capture 12](./media/conjur-arm64-12.png)
+<img src="./media/conjur-arm64-12.png" width="50%" height="50%"/>
 *building `openssl-builder` image*
 
 
@@ -98,14 +97,14 @@ Container defination is located in `Dockerfile` file, and the base image for ass
 13:59:23
 
 
-![screen capture 13](./media/conjur-arm64-13.png)
+<img src="./media/conjur-arm64-13.png" width="50%" height="50%"/>
 *Built 38 mins and get an error *
 
 
 https://github.com/openssl/openssl/issues/11105
 
 
-![screen capture 14](./media/conjur-arm64-14.png)
+<img src="./media/conjur-arm64-14.png" width="50%" height="50%"/>
 *"Building on aarch64 with fips" issue from `openssl` on Github*
 
 Based on https://www.openssl.org/docs/fips.html, at the time of writing this blog, it said `Neither validation will work with any release other than 1.0.2`.
@@ -114,48 +113,51 @@ So guess we need to stick with `openssl 1.0.2`.
 So back to the [issue page](https://github.com/openssl/openssl/issues/11105), there is a workaround which does not require any source code modifications.
 Awesome!   Shout to [@alexw91](https://github.com/alexw91)
 
-![screen capture 15](./media/conjur-arm64-15.png)
+<img src="./media/conjur-arm64-15.png" width="50%" height="50%"/>
 *The solution to fix the compile issue*
 
-![screen capture 16](./media/conjur-arm64-16.png)
+<img src="./media/conjur-arm64-16.png" width="50%" height="50%"/>
 *Updated `Dockerfile`*
 
 
 56 Minutes and 50 Seconds
 
 
-![screen capture 19](./media/conjur-arm64-19.png)
+<img src="./media/conjur-arm64-19.png" width="50%" height="50%"/>
 *Built `openssl-builder` successfully in 3410.1s
 
-![screen capture 20](./media/conjur-arm64-20.png)
+<img src="./media/conjur-arm64-20.png" width="50%" height="50%"/>
 
 # 2nd iamge: ubuntu-ruby-builder
 
-![screen capture 21](./media/conjur-arm64-21.png)
-![screen capture 22](./media/conjur-arm64-22.png)
-![screen capture 23](./media/conjur-arm64-23.png)
-![screen capture 24](./media/conjur-arm64-24.png)
+<img src="./media/conjur-arm64-21.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-22.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-23.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-24.png" width="50%" height="50%"/>
+
 
 # 3rd image: postgres-client-builder
 
-![screen capture 25](./media/conjur-arm64-25.png)
-![screen capture 26](./media/conjur-arm64-26.png)
-![screen capture 27](./media/conjur-arm64-27.png)
-![screen capture 28](./media/conjur-arm64-28.png)
-![screen capture 29](./media/conjur-arm64-29.png)
+<img src="./media/conjur-arm64-25.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-26.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-27.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-28.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-29.png" width="50%" height="50%"/>
+
 
 # One level up! 4th image: ubuntu-ruby-fips
 
-![screen capture 30](./media/conjur-arm64-30.png)
-![screen capture 31](./media/conjur-arm64-31.png)
-![screen capture 32](./media/conjur-arm64-32.png)
-![screen capture 33](./media/conjur-arm64-33.png)
+<img src="./media/conjur-arm64-30.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-31.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-32.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-33.png" width="50%" height="50%"/>
+
 
 
 # Building conjur image, again
 
-![screen capture 34](./media/conjur-arm64-34.png)
-![screen capture 35](./media/conjur-arm64-35.png)
+<img src="./media/conjur-arm64-34.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-35.png" width="50%" height="50%"/>
 
 
 Below is the [.env](.env)
@@ -195,14 +197,16 @@ services:
 
 # Spin it up, with errors?
 
-![screen capture 37](./media/conjur-arm64-37.png)
-![screen capture 38](./media/conjur-arm64-38.png)
+<img src="./media/conjur-arm64-37.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-38.png" width="50%" height="50%"/>
+
 
 # Debug and try again
 
-![screen capture 39](./media/conjur-arm64-39.png)
-![screen capture 40](./media/conjur-arm64-40.png)
-![screen capture 41](./media/conjur-arm64-41.png)
+<img src="./media/conjur-arm64-39.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-40.png" width="50%" height="50%"/>
+<img src="./media/conjur-arm64-41.png" width="50%" height="50%"/>
+
 
 # Lessons Learnt
 
