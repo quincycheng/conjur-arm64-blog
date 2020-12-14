@@ -6,34 +6,36 @@ This is the draft of conjur-arm64 blog.
 
 # TL;DR
 
-This blog is about my jounry of building [CyberArk Conjur](https://www.conjur.org/ container image that works on both ARM-based & Intel/AMD-based computer.
+This blog is about my journey of building [CyberArk Conjur](https://www.conjur.org/) container image that works on both ARM-based & Intel/AMD-based computer.
 
 If you're looking for a solution to execute Conjur on Pi4, you can download [docker-compose.yml](docker-compose.yml) & [.env](.env) files to spin up a the `quincycheng/conjur:latest` image that I built
 
 # Why I am doing this?
 
 As an IOT & single-board-computer lover, I recently pick up a Raspberry Pi 4 board as an upgrade of Pi2.
-It got enough processing power to execute container-based apps, while operates in low voltage powered by USB.
+Pi4 SDB is very nice SBC, that got enough processing power to execute container-based apps, while keep operating in low voltage powered by USB.
 
-Considering the power consumed by homelab VM farm, guess it's a good idea to run the 7x24 systems on Pi 4 instead of 220V VM systems.
+Considering the power consumed by homelab VM servers, guess it's a good idea to run the 7x24 systems on Pi 4 and power on my 220V VM systems only when I need them.
 
-![pi 4 & pi2](./media/pi.jpg)
+![pi 4 & pi2](./media/pi.jpg){:height="50%" width="50%"}
 *(left) Raspberry Pi 4 in Argon NEO Heatsink Case (right) Raspberry Pi 2 with 3.5" LCD HAT*
 
 
-One of the apps that I use is [CyberArk Conjur](https://www.conjur.org/).    Together with [summon](https://cyberark.github.io/summon/), it's an awesome way to inject secrets to my container-based apps as well as CLI.
+One of the apps that I use is [CyberArk Conjur](https://www.conjur.org/).    Together with [summon](https://cyberark.github.io/summon/), it's an awesome way to inject secrets to my container-based apps, CLI and automation tools like [Ansible](https://galaxy.ansible.com/cyberark/conjur).
 
-To make sure it can be executed on Pi4, we need to make sure the applications is arm64 compatible.
-The first thing that I checked is Docker Hub.
+To run applications on Pi4, we need to make sure the applications are arm64 compatible.
+
+Conjur is publicily avaliable as container image, let's check Docker Hub.
+
 After a quick search, I found that link to the image is [https://hub.docker.com/repository/docker/cyberark/conjur](https://hub.docker.com/repository/docker/cyberark/conjur)
 
 ![screen capture 1](./media/conjur-arm64-1.png)
 
-I have two news - good and bad.
+Now, I have two news - good and bad.
 
-The bad news is As you can see if above screen capture, the offical repo got `linux/amd64` images, and no `linux/arm64`.  
+The bad news is, as you can see in above screen capture, the offical repo got `linux/amd64` images, and no `linux/arm64`.  
 
-The good news is, Fortunately, Conjur is an open source ource project, so why don't we build one for `linux/arm64`?   
+The good news is, Conjur is an open source ource project, meaning that we could build an container image with both `linux/arm64` & `linux/amd64`
 
 
 # Going down the rabbit hole
