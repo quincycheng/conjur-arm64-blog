@@ -16,8 +16,8 @@ As an IOT & single-board-computer lover, I recently pick up a Raspberry Pi 4 boa
 Pi4 SDB is very nice SBC, that got enough processing power to execute container-based apps, while keep operating in low voltage powered by USB.
 
 Considering the power consumed by homelab VM servers, guess it's a good idea to run the 7x24 systems on Pi 4 and power on my 220V VM systems only when I need them.
+<img src="./media/pi.jpg" width="50%" height="50%"/>
 
-![pi 4 & pi2](./media/pi.jpg){:height="50%" width="50%"}
 *(left) Raspberry Pi 4 in Argon NEO Heatsink Case (right) Raspberry Pi 2 with 3.5" LCD HAT*
 
 
@@ -29,7 +29,7 @@ Conjur is publicily avaliable as container image, let's check Docker Hub.
 
 After a quick search, I found that link to the image is [https://hub.docker.com/repository/docker/cyberark/conjur](https://hub.docker.com/repository/docker/cyberark/conjur)
 
-![screen capture 1](./media/conjur-arm64-1.png)
+<img src="./media/conjur-arm64-1.png" width="50%" height="50%"/>
 
 Now, I have two news - good and bad.
 
@@ -43,7 +43,7 @@ The good news is, Conjur is an open source ource project, meaning that we could 
 Okay, first thing first, let's get the source code.
 With the [link](https://github.com/cyberark/conjur) from [Docker Hub](https://hub.docker.com/repository/docker/cyberark/conjur), I can quickly access GitHub project page.   
 
-![screen capture 2](./media/conjur-arm64-2.png)
+<img src="./media/conjur-arm64-2.png" width="50%" height="50%"/>
 *Conjur project on GitHub*
 
 
@@ -51,32 +51,32 @@ Let's create a folder to clone the project.
 With `git clone https://github.com/cyberark/conjur.git`, we got the source code less than a second, literally.  
 I notice that Conjur is written in Ruby, which should be portable and can easily port for arm64 using `ruby` images, right?
 
-![screen capture 3](./media/conjur-arm64-3.png)
+<img src="./media/conjur-arm64-3.png" width="50%" height="50%"/>
 *Cloning Conjur project from GitHub*
 
 Container defination is located in `Dockerfile` file, and the base image for assemble is set by `FROM` statement
 
-![screen capture 4](./media/conjur-arm64-4.png)
+<img src="./media/conjur-arm64-4.png" width="50%" height="50%"/>
 *`From` statement in `Dockerfile` from `conjur` project*
 
-![screen capture 5](./media/conjur-arm64-5.png)
+<img src="./media/conjur-arm64-5.png" width="50%" height="50%"/>
 *No arm64 support from `cyberark/ubuntu-ruby-fips` on docker hub*
 
 
-![screen capture 6](./media/conjur-arm64-6.png)
+<img src="./media/conjur-arm64-6.png" width="50%" height="50%"/>
 *Link to GitHub from `cyberark/ubuntu-ruby-fips` on docker hub*
 
 
-![screen capture 7](./media/conjur-arm64-7.png)
+<img src="./media/conjur-arm64-7.png" width="50%" height="50%"/>
 *`cyberark/conjur-base-image`on GitHub*
 
 
-![screen capture 8](./media/conjur-arm64-8.png)
+<img src="./media/conjur-arm64-8.png" width="50%" height="50%"/>
 *`From` statement in `Dockerfile` from `ubuntu-ruby-fips` project*
 
 
 
-![screen capture 9](./media/conjur-arm64-9.png)
+<img src="./media/conjur-arm64-9.png" width="50%" height="50%"/>
 *`From` statement in `Dockerfile` from sub-projects under `ubuntu-ruby-fips`*
 
 
